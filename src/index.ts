@@ -8,7 +8,8 @@ function main() {
   console.log("main() is called!");
   const socket = io(config.socketIOURL, config.socketIOOpts);
   const transmitter = new SocketIOTransmitter(socket);  
-  const commandBuffer = new CommandBuffer(transmitter); 
+  const commandBuffer = new CommandBuffer(); 
+  commandBuffer.addTransmitter(transmitter);
   
   const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
   const context = canvas.getContext("2d") as CanvasRenderingContext2D;

@@ -3,5 +3,6 @@ export const config = {
   socketIOOpts: {
     reconnectionDelayMax: 10000
   },
-  sendCommandDictInterval: 16
+  sendCommandDictInterval: 16,
+  countDownSize: 100
 };

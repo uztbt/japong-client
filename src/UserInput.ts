@@ -24,10 +24,9 @@ export interface Transmitter {
 
 export class CommandBuffer {
   dict: CommandDictionary;
-  transmitter: Transmitter;
-  intervalId: number;
-  constructor(transmitter: Transmitter) {
-    this.transmitter = transmitter;
+  transmitter: Transmitter | undefined;
+  intervalId: number | undefined;
+  constructor() {
     this.dict = {
       [Command.UP]: false,
       [Command.DOWN]: false,
@@ -40,6 +39,10 @@ export class CommandBuffer {
       document.addEventListener("keydown", this.registerKeyInput(true));
       document.addEventListener("keyup", this.registerKeyInput(false));
     });
+  }
+
+  addTransmitter(transmitter: Transmitter) {
+    this.transmitter = transmitter;
     this.intervalId = window.setInterval(
       this.sendCommandDict.bind(this),
       config.sendCommandDictInterval);
