@@ -9,17 +9,22 @@ type Board = {
   scores: number[];
 }
 
+type PlayerID = number;
+
 export class DrawableBuffer {
   private drawables: Drawable[];
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
-  constructor(canvas: HTMLCanvasElement ,context: CanvasRenderingContext2D, listener: Listener) {
+  private playerId: PlayerID;
+  constructor(canvas: HTMLCanvasElement ,context: CanvasRenderingContext2D, listener: Listener, playerId: PlayerID) {
     this.drawables = [];
     this.canvas = canvas;
     this.context = context;
-    listener.on("wait for opponent", this.waitForOpponent.bind(this));
+    this.playerId = playerId;
     listener.on("countDown", this.countDown.bind(this));
     listener.on("board", this.renewBoard.bind(this));
+    listener.on("game over", this.gameOver.bind(this));
+    this.waitForOpponent();
   }
 
   renewBoard(board: Board) {
@@ -75,14 +80,14 @@ export class DrawableBuffer {
     this.context.fillText(
       board.scores[0].toString(10),
       config.court.offset + config.line.height + config.points.offset.left,
-      this.canvas.height / 2 -
-        (config.centerLine.height / 2 + config.points.offset.centerLine)
+      this.canvas.height / 2 + config.centerLine.height / 2 +
+        config.points.font.size
     );
     this.context.fillText(
       board.scores[1].toString(10),
       config.court.offset + config.line.height + config.points.offset.left,
-      this.canvas.height / 2 + config.centerLine.height / 2 +
-        config.points.font.size
+      this.canvas.height / 2 -
+        (config.centerLine.height / 2 + config.points.offset.centerLine)
     );
   }
 
@@ -98,6 +103,27 @@ export class DrawableBuffer {
       "your opponent",
       50,
       this.canvas.height / 2 + 10 + config.countDownSize / 3);
+  }
+
+  private gameOver(result: {scores: number[]}) {
+    this.drawBackground();
+    const resultMessage = result.scores[this.playerId] > result.scores[1-this.playerId] ? "YOU WIN" : "YOU LOSE";;
+    this.context.fillStyle = "#fff";
+    this.context.fillText(
+      resultMessage,
+      this.canvas.width / 2 - 90,
+      this.canvas.height / 2 - 45
+    );
+    this.context.fillText(
+      `${result.scores[0]} - ${result.scores[1]}`,
+      this.canvas.width / 2 - 45,
+      this.canvas.height / 2
+    );
+    this.context.fillText(
+      `RELOAD`,
+      this.canvas.width / 2  - 90,
+      this.canvas.height / 2 + 45
+    );
   }
 }
 
