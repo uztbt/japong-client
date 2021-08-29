@@ -1,19 +1,18 @@
 import { CommandBuffer } from './UserInput';
 import { SocketIOTransmitter } from './SocketIOTransmitter'
 import { config } from './config';
+import { DrawableBuffer } from './Rendering';
+import { io } from 'socket.io-client';
 
 function main() {
   console.log("main() is called!");
-  const transmitter = new SocketIOTransmitter(
-    config.socketIOURL,
-    config.socketIOOpts);
-  if (typeof transmitter === "undefined") {
-    throw Error("Failed to initialize transmitter");
-  } else {
-    console.log("transmitter is not undefined")
-  }
-  console.log(`transmitter: ${transmitter}`);
+  const socket = io(config.socketIOURL, config.socketIOOpts);
+  const transmitter = new SocketIOTransmitter(socket);  
   const commandBuffer = new CommandBuffer(transmitter); 
+  
+  const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
+  const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+  const drawableBuffer = new DrawableBuffer(canvas, context, socket);
 }
 
 main();
