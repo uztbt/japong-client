@@ -7,6 +7,9 @@ import { io } from 'socket.io-client';
 function main() {
   console.log("main() is called!");
   const socket = io(config.socketIOURL, config.socketIOOpts);
+  socket.on('joined room', (room: string, number: number) => {
+    console.log(`There are ${number} people in room ${room}`);
+  })
   const transmitter = new SocketIOTransmitter(socket);  
   const commandBuffer = new CommandBuffer(); 
   commandBuffer.addTransmitter(transmitter);
