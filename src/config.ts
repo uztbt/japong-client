@@ -1,5 +1,6 @@
 export const config = {
   socketIOURL: "https://yuji.page",
+  // socketIOURL: "http://127.0.0.1:8081",
   socketIOOpts: {
     reconnectionDelayMax: 10000,
   },
@@ -25,6 +26,8 @@ export const config = {
   },
   court: {
     offset: 10,
+    width: 390,
+    height: 400
   },
   line: {
     height: 5

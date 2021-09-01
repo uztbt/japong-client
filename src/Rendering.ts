@@ -31,7 +31,7 @@ export class DrawableBuffer {
     console.log("renewBoard is called")
     console.profile(JSON.stringify(board));
     this.drawables = board.drawables;
-    this.drawBoard(board);
+    this.drawBoard(board, this.playerId === 1);
   }
 
   private drawBackground() {
@@ -52,27 +52,22 @@ export class DrawableBuffer {
     this.context.fillText(
       seconds.toString(10),
       this.canvas.width / 2 - config.countDownSize / 3,
-      this.canvas.height / 2 + config.countDownSize / 3)
-    this.context.font = `${30}px ${config.points.font.name}`;
-    if (this.playerId === 0) {
-      this.context.fillText("Opponent", this.canvas.width/2-90, this.canvas.height/4);
-      this.context.fillText("You", this.canvas.width/2-45, this.canvas.height/4*3);
-    } else {
-      this.context.fillText("You", this.canvas.width/2-45, this.canvas.height/4);
-      this.context.fillText("Opponent", this.canvas.width/2-90, this.canvas.height/4*3);
-    }
+      this.canvas.height / 2 + config.countDownSize / 3);
   }
 
-  private drawBoard(board: Board) {
+  private drawBoard(board: Board, symmetricTransform: boolean) {
     this.drawBackground();
     this.context.fillStyle = "#fff";
     while(board.drawables.length > 0) {
       const drawable = this.drawables.pop()!;
+      const transFormed = symmetricTransform ?
+        pointSymmetricTransform(drawable, config.court.width, config.court.height) :
+        drawable;
       this.context.fillRect(
-        drawable.x,
-        drawable.y,
-        drawable.w,
-        drawable.h
+        transFormed.x,
+        transFormed.y,
+        transFormed.w,
+        transFormed.h
       );
     }
     const inCourtLength = this.canvas.width - 2 * (config.court.offset + config.line.height);
@@ -142,4 +137,13 @@ type Rect = {
   y: number;
   w: number;
   h: number;
+}
+
+function pointSymmetricTransform(rect: Rect, maxX: number, maxY: number): Rect {
+  return {
+    x: maxX - rect.x - rect.w,
+    y: maxY - rect.y - rect.h,
+    w: rect.w,
+    h: rect.h
+  }
 }
