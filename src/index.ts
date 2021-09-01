@@ -8,14 +8,17 @@ import './css/index.css';
 function main() {
   console.log("main() is called!");
   const socket = io(config.socketIOURL, config.socketIOOpts);
-  socket.on('joined room', (room: string, number: number) => {
-    console.log(`There are ${number} people in room ${room}`);
-    const drawableBuffer = new DrawableBuffer(canvas, context, socket, number-1);
-  })
+  socket.on('joined room', (room: string, number: number) => {    
+    const playerId = number - 1;
+    if (playerId === 1) {
+      commandBuffer.setMirror(true);
+    }
+    commandBuffer.addTransmitter(transmitter);  
+    new DrawableBuffer(canvas, context, socket, playerId);
+  });
   
-  const transmitter = new SocketIOTransmitter(socket);
   const commandBuffer = new CommandBuffer();
-  commandBuffer.addTransmitter(transmitter);
+  const transmitter = new SocketIOTransmitter(socket);
   
   const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
   const context = canvas.getContext("2d") as CanvasRenderingContext2D;
