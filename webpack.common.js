@@ -19,7 +19,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'pong.js',
+    filename: 'japong.js',
     path: path.resolve(__dirname, 'dist', 'javascript'),
     clean: true
   }

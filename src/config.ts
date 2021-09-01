@@ -1,7 +1,7 @@
 export const config = {
-  socketIOURL: "http://localhost:3000",
+  socketIOURL: "https://yuji.page",
   socketIOOpts: {
-    reconnectionDelayMax: 10000
+    reconnectionDelayMax: 10000,
   },
   sendCommandDictInterval: 16,
   countDownSize: 100,
