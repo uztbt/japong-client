@@ -25,6 +25,7 @@ export interface Transmitter {
 export class CommandBuffer {
   dict: CommandDictionary;
   transmitter: Transmitter | undefined;
+  private mirror: boolean = false;
   intervalId: number | undefined;
   constructor() {
     this.dict = {
@@ -48,24 +49,37 @@ export class CommandBuffer {
       config.sendCommandDictInterval);
   }
 
+  setMirror(flag: boolean = true) {
+    this.mirror = true;
+  }
+
   private registerKeyInput(isKeyDown: boolean) {
     return (e: KeyboardEvent) => {
-        e.preventDefault();
+      let key : Command;
         switch (e.key) {
         case "ArrowUp":
-            this.dict[Command.UP] = isKeyDown;
+            key = this.mirror ? Command.DOWN : Command.UP;
+            this.dict[key] = isKeyDown;
+            e.preventDefault();
             break;
         case "ArrowDown":
-            this.dict[Command.DOWN] = isKeyDown;
+            key = this.mirror ? Command.UP : Command.DOWN;
+            this.dict[key] = isKeyDown;
+            e.preventDefault();
             break;
         case "ArrowLeft":
-            this.dict[Command.LEFT] = isKeyDown;
+            key = this.mirror ? Command.RIGHT : Command.LEFT;
+            this.dict[key] = isKeyDown;
+            e.preventDefault();
             break;
         case "ArrowRight":
-            this.dict[Command.RIGHT] = isKeyDown;
+            key = this.mirror ? Command.LEFT : Command.RIGHT;
+            this.dict[key] = isKeyDown;
+            e.preventDefault();
             break;
         case "Enter":
             this.dict[Command.ENTER] = isKeyDown;
+            e.preventDefault();
             break;
         }
     }
