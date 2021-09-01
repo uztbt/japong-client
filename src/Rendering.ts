@@ -53,6 +53,14 @@ export class DrawableBuffer {
       seconds.toString(10),
       this.canvas.width / 2 - config.countDownSize / 3,
       this.canvas.height / 2 + config.countDownSize / 3)
+    this.context.font = `${30}px ${config.points.font.name}`;
+    if (this.playerId === 0) {
+      this.context.fillText("Opponent", this.canvas.width/2-90, this.canvas.height/4);
+      this.context.fillText("You", this.canvas.width/2-45, this.canvas.height/4*3);
+    } else {
+      this.context.fillText("You", this.canvas.width/2-45, this.canvas.height/4);
+      this.context.fillText("Opponent", this.canvas.width/2-90, this.canvas.height/4*3);
+    }
   }
 
   private drawBoard(board: Board) {
