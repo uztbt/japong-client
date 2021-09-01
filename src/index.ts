@@ -13,8 +13,10 @@ function main() {
     if (playerId === 1) {
       commandBuffer.setMirror(true);
     }
-    commandBuffer.addTransmitter(transmitter);  
     new DrawableBuffer(canvas, context, socket, playerId);
+  });
+  socket.once("countDown", () => {
+    commandBuffer.addTransmitter(transmitter);  
   });
   
   const commandBuffer = new CommandBuffer();
