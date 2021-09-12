@@ -24,12 +24,11 @@ export class DrawableBuffer {
     listener.on("countDown", this.countDown.bind(this));
     listener.on("board", this.renewBoard.bind(this));
     listener.on("game over", this.gameOver.bind(this));
+    listener.on("opponent left", this.opponentLeft.bind(this))
     this.waitForOpponent();
   }
 
   renewBoard(board: Board) {
-    console.log("renewBoard is called")
-    console.profile(JSON.stringify(board));
     this.drawables = board.drawables;
     this.drawBoard(board, this.playerId === 1);
   }
@@ -53,6 +52,25 @@ export class DrawableBuffer {
       seconds.toString(10),
       this.canvas.width / 2 - config.countDownSize / 3,
       this.canvas.height / 2 + config.countDownSize / 3);
+  }
+
+  private opponentLeft() {
+    this.drawBackground();
+    this.context.fillStyle = "#fff";
+    this.context.font = `${30}px ${config.points.font.name}`;
+    this.context.fillText(
+      "Opponent left ;o",
+      50,
+    this.canvas.height / 2 - config.countDownSize);
+    this.context.font = `${config.waitingSize}px Orbitron`;
+    this.context.fillText(
+      "Waiting for",
+      50,
+    this.canvas.height / 2 + 10 - config.countDownSize / 3);
+    this.context.fillText(
+      "your opponent",
+      50,
+      this.canvas.height / 2 + 10 + config.countDownSize / 3);
   }
 
   private drawBoard(board: Board, symmetricTransform: boolean) {
