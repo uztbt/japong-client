@@ -1,5 +1,6 @@
 export const config = {
-  socketIOURL: "https://yuji.page",
+  socketIOURL: "https://japong-server-wpnqyv3xza-uc.a.run.app",
+  // socketIOURL: "https://japong-server-wpnqyv3xza-an.a.run.app",
   // socketIOURL: "http://127.0.0.1:8081",
   socketIOOpts: {
     reconnectionDelayMax: 10000,
