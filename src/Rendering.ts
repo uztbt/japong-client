@@ -24,7 +24,7 @@ export class DrawableBuffer {
     listener.on("countDown", this.countDown.bind(this));
     listener.on("board", this.renewBoard.bind(this));
     listener.on("game over", this.gameOver.bind(this));
-    listener.on("opponent left", this.opponentLeft.bind(this))
+    listener.on("opponentLeft", this.opponentLeft.bind(this))
     this.waitForOpponent();
   }
 
