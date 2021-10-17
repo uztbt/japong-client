@@ -8,8 +8,24 @@ body {
   text-align: center;
 }
 
-#game-wrapper{
+#grand-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 30px;
+}
+
+#game-wrapper {
   width: 390px;
+}
+
+#menu-wrapper {
+  width: 390px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .playerLabel {
